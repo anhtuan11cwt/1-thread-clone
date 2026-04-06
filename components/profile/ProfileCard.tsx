@@ -1,6 +1,9 @@
 "use client";
 
+import { useState } from "react";
+import toast from "react-hot-toast";
 import Avatar from "@/components/ui/Avatar";
+import { toggleFollow } from "@/server-actions/toggleFollow";
 import { useModalStore } from "@/store/useModalStore";
 import type { User } from "@/types/user";
 
@@ -11,6 +14,25 @@ interface ProfileCardProps {
 
 const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
   const { openEditProfile } = useModalStore();
+  const [isFollowing, setIsFollowing] = useState(user.isFollowing ?? false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleFollow = async () => {
+    try {
+      setIsLoading(true);
+      const result = await toggleFollow(user.id);
+
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        setIsFollowing(result.isFollowing ?? !isFollowing);
+      }
+    } catch {
+      toast.error("Đã xảy ra lỗi");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="bg-surface p-6 rounded-xl space-y-4">
@@ -55,10 +77,16 @@ const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
         </button>
       ) : (
         <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+          className={`px-4 py-2 rounded-lg ${
+            isFollowing
+              ? "bg-surface border border-white text-white"
+              : "bg-blue-500 text-white"
+          }`}
+          disabled={isLoading}
+          onClick={handleFollow}
           type="button"
         >
-          Theo dõi
+          {isLoading ? "..." : isFollowing ? "Đang theo dõi" : "Theo dõi"}
         </button>
       )}
     </div>

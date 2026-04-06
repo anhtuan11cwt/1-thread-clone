@@ -6,9 +6,10 @@ export interface User {
   };
   bio: string | null;
   createdAt: Date;
-  email: string;
+  email: string | null;
   id: string;
   image: string | null;
+  isFollowing?: boolean;
   name: string | null;
   username: string | null;
 }
