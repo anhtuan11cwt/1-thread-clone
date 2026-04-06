@@ -1,12 +1,14 @@
 "use server";
 
+import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-export const getCurrentUser = async (headers?: Headers) => {
-  const session = headers
-    ? await auth.api.getSession({ headers })
-    : await auth.api.getSession();
+export const getCurrentUser = async () => {
+  const headersList = await headers();
+  const session = await auth.api.getSession({
+    headers: headersList,
+  });
 
   if (!session?.user) return null;
 

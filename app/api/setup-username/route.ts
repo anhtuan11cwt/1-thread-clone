@@ -4,8 +4,7 @@ import { getCurrentUser } from "@/server-actions/getCurrentUser";
 
 export async function POST(req: Request) {
   try {
-    const headers = req.headers;
-    const user = await getCurrentUser(headers);
+    const user = await getCurrentUser();
 
     if (!user) {
       return NextResponse.json({ error: "Không được phép" }, { status: 401 });
@@ -40,7 +39,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Setup username error:", error);
+    console.error("Lỗi thiết lập username:", error);
     return NextResponse.json({ error: "Lỗi máy chủ" }, { status: 500 });
   }
 }
