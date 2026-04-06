@@ -1,7 +1,9 @@
-import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/server-actions/getCurrentUser";
+"use server";
 
-export default async function HomePage() {
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "./getCurrentUser";
+
+export async function requireGuest() {
   const user = await getCurrentUser();
 
   if (user) {
@@ -11,6 +13,4 @@ export default async function HomePage() {
 
     redirect("/setup-username");
   }
-
-  redirect("/login");
 }
