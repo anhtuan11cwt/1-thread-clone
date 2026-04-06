@@ -1,6 +1,9 @@
 "use client";
 
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import { type ChangeEvent, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import Avatar from "@/components/ui/Avatar";
 import { useModalStore } from "@/store/useModalStore";
 import type { User } from "@/types/user";
@@ -11,13 +14,16 @@ interface ProfileModalProps {
 }
 
 export default function ProfileModal({ userProfile }: ProfileModalProps) {
+  const router = useRouter();
   const { isEditProfileOpen, closeEditProfile } = useModalStore();
 
   const [name, setName] = useState(userProfile.name || "");
+  const [username, setUsername] = useState(userProfile.username || "");
   const [bio, setBio] = useState(userProfile.bio || "");
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
     userProfile.image || null,
   );
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,17 +32,36 @@ export default function ProfileModal({ userProfile }: ProfileModalProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setAvatarFile(file);
     setAvatarPreview(URL.createObjectURL(file));
   };
 
   const handleSubmit = async () => {
+    if (!name.trim() || !username.trim()) {
+      toast.error("Tên và username không được để trống");
+      return;
+    }
+
     try {
       setLoading(true);
 
-      // TODO: call server action updateProfile
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("username", username);
+      formData.append("bio", bio || "");
 
+      if (avatarFile) {
+        formData.append("image", avatarFile);
+      }
+
+      await axios.patch("/api/profile/update", formData);
+
+      toast.success("Cập nhật profile thành công");
+      router.refresh();
       closeEditProfile();
-    } catch (err) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { error?: string } } };
+      toast.error(err.response?.data?.error || "Có lỗi xảy ra");
       console.error(err);
     } finally {
       setLoading(false);
@@ -84,6 +109,22 @@ export default function ProfileModal({ userProfile }: ProfileModalProps) {
               onChange={(e) => setName(e.target.value)}
               type="text"
               value={name}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label
+              className="font-medium text-white text-sm"
+              htmlFor="username"
+            >
+              Username
+            </label>
+            <input
+              className="bg-surface p-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full text-white placeholder:text-text-muted"
+              id="username"
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              value={username}
             />
           </div>
 
