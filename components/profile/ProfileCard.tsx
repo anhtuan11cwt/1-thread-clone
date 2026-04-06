@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import Avatar from "@/components/ui/Avatar";
@@ -16,6 +17,7 @@ const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
   const { openEditProfile } = useModalStore();
   const [isFollowing, setIsFollowing] = useState(user.isFollowing ?? false);
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleFollow = async () => {
     try {
@@ -26,6 +28,7 @@ const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
         toast.error(result.error);
       } else {
         setIsFollowing(result.isFollowing ?? !isFollowing);
+        router.refresh();
       }
     } catch {
       toast.error("Đã xảy ra lỗi");
