@@ -1,4 +1,7 @@
+"use client";
+
 import Avatar from "@/components/ui/Avatar";
+import { useModalStore } from "@/store/useModalStore";
 import type { User } from "@/types/user";
 
 interface ProfileCardProps {
@@ -7,6 +10,8 @@ interface ProfileCardProps {
 }
 
 const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
+  const { openEditProfile } = useModalStore();
+
   return (
     <div className="bg-surface p-6 rounded-xl space-y-4">
       <div className="flex items-center gap-4">
@@ -24,7 +29,11 @@ const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
         {user.bio ? (
           <p className="text-white">{user.bio}</p>
         ) : isCurrentUser ? (
-          <button className="text-blue-400 hover:underline" type="button">
+          <button
+            className="text-blue-400 hover:underline"
+            onClick={openEditProfile}
+            type="button"
+          >
             Thêm tiểu sử
           </button>
         ) : null}
@@ -39,6 +48,7 @@ const ProfileCard = ({ user, isCurrentUser = true }: ProfileCardProps) => {
       {isCurrentUser ? (
         <button
           className="bg-white text-black px-4 py-2 rounded-lg"
+          onClick={openEditProfile}
           type="button"
         >
           Chỉnh sửa hồ sơ

@@ -24,7 +24,7 @@ export default function MobileMenu() {
         if (item.isAction) {
           return (
             <button key={item.label} type="button">
-              <Icon size={28} />
+              <Icon className="text-white" size={28} />
             </button>
           );
         }

@@ -34,7 +34,7 @@ export default function Sidebar() {
             if (item.isAction) {
               return (
                 <button
-                  className="flex items-center gap-3 p-3 rounded-lg text-text-muted hover:bg-surface transition cursor-pointer"
+                  className="flex items-center gap-3 p-3 rounded-lg text-text-muted hover:bg-surface hover:text-white transition cursor-pointer"
                   key={item.label}
                   type="button"
                 >
