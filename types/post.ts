@@ -6,8 +6,8 @@ export interface Post {
 
   author: {
     id: string;
-    username: string;
-    name: string;
+    username: string | null;
+    name: string | null;
     image: string | null;
   };
   content: string | null;
@@ -15,7 +15,5 @@ export interface Post {
   id: string;
   image: string | null;
 
-  likes: {
-    userId: string;
-  }[];
+  isLiked?: boolean;
 }
