@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import QueryProvider from "@/providers/QueryProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -24,16 +25,18 @@ export default function RootLayout({
       <body
         className={`${poppins.className} min-h-full flex flex-col bg-background`}
       >
-        {children}
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            style: {
-              background: "#333",
-              color: "#fff",
-            },
-          }}
-        />
+        <QueryProvider>
+          {children}
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              style: {
+                background: "#333",
+                color: "#fff",
+              },
+            }}
+          />
+        </QueryProvider>
       </body>
     </html>
   );
