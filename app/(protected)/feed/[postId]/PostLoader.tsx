@@ -1,11 +1,12 @@
 import { MoreHorizontal } from "lucide-react";
-import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import Comments from "@/components/feed/Comments";
 import PostActions from "@/components/feed/PostActions";
 import Avatar from "@/components/ui/Avatar";
+import moment from "@/lib/moment";
 import { getPostById } from "@/server-actions/getPostById";
+import type { Post } from "@/types/post";
 
 interface PostLoaderProps {
   postId: string;
@@ -65,13 +66,7 @@ export default async function PostLoader({ postId }: PostLoaderProps) {
         )}
       </div>
 
-      <PostActions
-        post={{
-          _count: post._count,
-          id: post.id,
-          isLiked: post.isLiked,
-        }}
-      />
+      <PostActions post={post as unknown as Post} />
 
       <Comments postId={post.id} />
     </div>

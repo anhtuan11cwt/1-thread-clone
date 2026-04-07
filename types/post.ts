@@ -15,5 +15,5 @@ export interface Post {
   id: string;
   image: string | null;
 
-  isLiked?: boolean;
+  isLiked: boolean;
 }

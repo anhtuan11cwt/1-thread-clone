@@ -1,7 +1,7 @@
 "use client";
 
-import moment from "moment";
 import { useEffect, useState } from "react";
+import moment from "@/lib/moment";
 import Avatar from "../ui/Avatar";
 
 interface Comment {
@@ -40,6 +40,13 @@ export default function Comments({ postId }: CommentsProps) {
     };
 
     fetchComments();
+
+    const handleNewComment = () => fetchComments();
+    window.addEventListener("comment-added", handleNewComment);
+
+    return () => {
+      window.removeEventListener("comment-added", handleNewComment);
+    };
   }, [postId]);
 
   if (isLoading) {

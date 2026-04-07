@@ -1,34 +1,37 @@
 import { MoreHorizontal } from "lucide-react";
-import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
+import moment from "@/lib/moment";
 import type { Post } from "@/types/post";
 import Avatar from "../ui/Avatar";
 import PostActions from "./PostActions";
 
 interface FeedPostProps {
   action?: boolean;
-  post: Post & { isLiked: boolean };
+  post: Post;
 }
 
 export default function FeedPost({ post, action = true }: FeedPostProps) {
   return (
     <div className="border border-border rounded-xl p-4 bg-surface">
       <div className="flex items-start gap-3">
-        <Link href={`/${post.author.username}`}>
-          <Avatar alt={post.author.name || ""} imageSrc={post.author.image} />
+        <Link href={`/${post.author?.username}`}>
+          <Avatar
+            alt={post.author?.name || ""}
+            imageSrc={post.author?.image || "/images/avatar.png"}
+          />
         </Link>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <Link
               className="font-semibold text-white hover:underline"
-              href={`/${post.author.username}`}
+              href={`/${post.author?.username}`}
             >
-              {post.author.name}
+              {post.author?.name}
             </Link>
             <span className="text-text-muted text-sm">
-              @{post.author.username}
+              @{post.author?.username}
             </span>
             <span className="text-text-muted text-sm">
               · {moment(post.createdAt).fromNow()}

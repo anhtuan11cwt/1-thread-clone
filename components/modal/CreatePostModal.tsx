@@ -79,6 +79,13 @@ const CreatePostModal = () => {
     }
   };
 
+  const handleClose = () => {
+    if (content || imageFile) {
+      if (!window.confirm("Bạn có chắc muốn hủy bài đăng?")) return;
+    }
+    closeCreatePost();
+  };
+
   if (!isCreatePostOpen) return null;
 
   return (
@@ -86,10 +93,10 @@ const CreatePostModal = () => {
       aria-modal="true"
       className="fixed inset-0 bg-black/50 flex justify-center items-center z-50"
       onClick={(e) => {
-        if (e.target === e.currentTarget) closeCreatePost();
+        if (e.target === e.currentTarget) handleClose();
       }}
       onKeyDown={(e) => {
-        if (e.key === "Escape") closeCreatePost();
+        if (e.key === "Escape") handleClose();
       }}
       role="dialog"
     >
@@ -97,7 +104,7 @@ const CreatePostModal = () => {
         <div className="flex justify-between items-center">
           <button
             className="text-text-muted hover:text-white transition"
-            onClick={closeCreatePost}
+            onClick={handleClose}
             type="button"
           >
             ✕

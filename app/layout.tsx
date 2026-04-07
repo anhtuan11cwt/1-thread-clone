@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import moment from "moment";
 import { Toaster } from "react-hot-toast";
 import QueryProvider from "@/providers/QueryProvider";
+import "moment/locale/vi";
+
+moment.locale("vi");
 
 const poppins = Poppins({
   subsets: ["latin"],
