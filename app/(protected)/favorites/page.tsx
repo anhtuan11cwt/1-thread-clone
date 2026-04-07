@@ -5,6 +5,8 @@ import Container from "@/components/layout/Container";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { getLikedPosts } from "@/server-actions/getLikedPosts";
 
+export const dynamic = "force-dynamic";
+
 export default function FavoritesPage() {
   return (
     <Container title="Favorites">
